@@ -1,41 +1,53 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-readonly TASK=${1:?"Please provide a task"}
+readonly TASK=${1:?"Please provide a task [clean, prepare, build, install]"}
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-readonly PACKAGE_DIR="${SCRIPT_DIR}/linux"
 readonly PATCHES_DIR="${SCRIPT_DIR}/patches"
+readonly BUILD_DIR="${SCRIPT_DIR}/build"
+readonly LINUX_DIR="${BUILD_DIR}/linux"
+readonly PACKAGE_DIR="${BUILD_DIR}/package"
 
-function clone_kernel() {
-  cd "$SCRIPT_DIR"
-  asp update linux
-  [[ -d "${PACKAGE_DIR}" ]] || asp export linux
-  cd ..
+function clean() {
+  [[ -d "${BUILD_DIR}" ]] && rm -r "${BUILD_DIR}"
 }
 
-function configure() {
-  #https://github.com/archlinux/svntogit-packages/blob/packages/linux/trunk/PKGBUILD
-  cp "${PATCHES_DIR}/PKGBUILD" "${PACKAGE_DIR}/PKGBUILD"
+function prepare() {
+  mkdir -p "${BUILD_DIR}"
 
-  patch "${PACKAGE_DIR}/config" <"${PATCHES_DIR}/config.patch"
+  if [[ -d "${LINUX_DIR}" ]]; then
+    echo "Updating linux kernel repository..."
+    cd "${LINUX_DIR}"
+    git pull
+    cd ..
 
-  cd "$PACKAGE_DIR"
-  local SHA256SUMS
-  SHA256SUMS=$(makepkg -g -f -p PKGBUILD)
+  else
+    echo "Cloning linux kernel repository..."
+    git clone https://github.com/archlinux/svntogit-packages --branch packages/linux --single-branch "${LINUX_DIR}"
+  fi
 
-  SHA256SUMS="${SHA256SUMS}" envsubst '$SHA256SUMS' <PKGBUILD | tee PKGBUILD
+  mkdir -p "${PACKAGE_DIR}"
+  cd "${PACKAGE_DIR}"
+  echo "Copying package build instructions from trunk..."
+  cp "${LINUX_DIR}"/trunk/{config,PKGBUILD} .
+
+  echo "Patching files..."
+  echo "CONFIG_I8K=y" >> config
+  patch PKGBUILD <"${PATCHES_DIR}/PKGBUILD.patch"
+
+  echo "Updating checksums..."
   updpkgsums
   cd ..
 }
 
-function build_kernel() {
-  cd "$PACKAGE_DIR"
+function build() {
+  cd "${PACKAGE_DIR}"
   makepkg -s
   cd ..
 }
 
-function install_packages() {
-  cd "$PACKAGE_DIR"
+function install() {
+  cd "${PACKAGE_DIR}"
   pacman -U *.tar.zst
   cd ..
 }
