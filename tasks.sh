@@ -13,9 +13,11 @@ function clone_kernel() {
   cd ..
 }
 
-function patch_files() {
+function configure() {
+  #https://github.com/archlinux/svntogit-packages/blob/packages/linux/trunk/PKGBUILD
+  cp "${PATCHES_DIR}/PKGBUILD" "${PACKAGE_DIR}/PKGBUILD"
+
   patch "${PACKAGE_DIR}/config" <"${PATCHES_DIR}/config.patch"
-  patch "${PACKAGE_DIR}/PKGBUILD" <"${PATCHES_DIR}/PKGBUILD.patch"
 
   cd "$PACKAGE_DIR"
   local SHA256SUMS
