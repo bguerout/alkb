@@ -10,7 +10,7 @@ to build a custom kernel.
 make
 ```
 
-Once build it is finished, you can install the kernel packages with the following commands:
+Once build is finished, you can install the kernel packages with the following commands:
 
 ```sh
 cd build/package
