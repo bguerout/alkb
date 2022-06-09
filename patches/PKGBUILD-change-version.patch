@@ -1,0 +1,13 @@
+--- linux/PKGBUILD	2022-06-07 19:08:45.277371244 +0200
++++ linux/PKGBUILD.custom	2022-06-07 19:08:16.890519633 +0200
+@@ -1,8 +1,8 @@
+ # Maintainer: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
+ 
+-pkgbase=linux
++pkgbase=linux-custom
+ pkgver=5.18.2.arch1
+-pkgrel=1
++pkgrel=1.1
+ pkgdesc='Linux'
+ _srctag=v${pkgver%.*}-${pkgver##*.}
+ url="https://github.com/archlinux/linux/commits/$_srctag"

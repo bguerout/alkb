@@ -1,16 +1,5 @@
 --- linux/PKGBUILD	2022-06-07 19:08:45.277371244 +0200
 +++ linux/PKGBUILD.custom	2022-06-07 19:08:16.890519633 +0200
-@@ -1,8 +1,8 @@
- # Maintainer: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
- 
--pkgbase=linux
-+pkgbase=linux-xps-custom
- pkgver=5.18.2.arch1
--pkgrel=1
-+pkgrel=1.1
- pkgdesc='Linux'
- _srctag=v${pkgver%.*}-${pkgver##*.}
- url="https://github.com/archlinux/linux/commits/$_srctag"
 @@ -10,7 +10,6 @@
  license=(GPL2)
  makedepends=(
@@ -19,15 +8,6 @@
    git
  )
  options=('!strip')
-@@ -54,6 +53,8 @@
-   make olddefconfig
-   diff -u ../config .config || :
- 
-+  yes 'n' | make LSMOD=$HOME/.config/modprobed.db localmodconfig
-+
-   make -s kernelrelease > version
-   echo "Prepared $pkgbase version $(<version)"
- }
 @@ -61,7 +62,6 @@
  build() {
    cd $_srcname
