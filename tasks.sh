@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-readonly TASK=${1:?"Please provide a task [clean, prepare, build, install]"}
+readonly TASK=${1:?"Please provide a task [configure_package, apply_patches]"}
 shift
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly PATCHES_DIR="${SCRIPT_DIR}/patches"
@@ -17,10 +17,20 @@ function _apply_config() {
   cd ..
 }
 
-function get_kernel_package() {
+function _set_version() {
+  local package_name="${1}"
+  local package_release_number="${2}"
 
+  echo "Updating package name '${package_name}' and release number '${package_release_number}'..."
+  cd "${PACKAGE_DIR}"
+  sed -i "s/pkgbase=linux/pkgbase=${package_name}/g" PKGBUILD
+  sed -i "s/pkgrel=1/pkgrel=${package_release_number}/g" PKGBUILD
+  cd ..
+}
+
+function get_kernel_package() {
   if [[ -d "${LINUX_DIR}" ]]; then
-    echo "Updating linux kernel repository..."
+    echo "Fetching linux kernel repository..."
     cd "${LINUX_DIR}"
     git pull
     cd ..
@@ -37,8 +47,8 @@ function get_kernel_package() {
 }
 
 function configure_package() {
-  apply_patches "change-version"
   apply_patches "remove-doc"
+  _set_version "$@"
   _apply_config
 }
 
