@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-readonly TASK=${1:?"Please provide a task [configure_package, apply_patches]"}
+readonly TASK=${1:?"Please provide a task [get_linux_package, configure_package, apply_patches]"}
 shift
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly PATCHES_DIR="${SCRIPT_DIR}/patches"
@@ -28,7 +28,7 @@ function _set_version() {
   cd ..
 }
 
-function get_kernel_package() {
+function get_linux_package() {
   if [[ -d "${LINUX_DIR}" ]]; then
     echo "Fetching linux kernel repository..."
     cd "${LINUX_DIR}"
