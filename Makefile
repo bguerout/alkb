@@ -10,10 +10,10 @@ prepare:
 	bash tasks.sh configure_package ${PACKAGE_NAME} ${PACKAGE_RELEASE_NUMBER}
 
 package:
-	cd build/package && makepkg -s
+	bash tasks.sh build
 
 modprobed: prepare
 	bash tasks.sh apply_patches modprobed
-	$(MAKE) package
+	bash tasks.sh build
 
 default: prepare package

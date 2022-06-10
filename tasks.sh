@@ -62,5 +62,11 @@ function apply_patches() {
   cd ..
 }
 
+function build() {
+  cd "${PACKAGE_DIR}"
+  makepkg -s
+  cd ..
+}
+
 #Call task
 $TASK "${@}"
