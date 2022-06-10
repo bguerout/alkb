@@ -14,6 +14,6 @@ package:
 
 modprobed: prepare
 	bash tasks.sh apply_patches modprobed
-	$(MAKE) build
+	$(MAKE) package
 
 default: prepare package
