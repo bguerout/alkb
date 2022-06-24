@@ -36,5 +36,13 @@ make
 
 Note that you can also use custom config with `modprobed` task
 
+## Speed up build
 
+As described in [makepkg doc](https://wiki.archlinux.org/title/Makepkg#Improving_compile_times), you can build the
+kernel faster by setting the following options in `/etc/makepkg.conf` :
+
+```
+MAKEFLAGS="-j$(nproc)"
+BUILDDIR=/tmp/makepkg
+```
 
