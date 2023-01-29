@@ -1,14 +1,14 @@
---- linux/PKGBUILD	2022-06-07 19:08:45.277371244 +0200
-+++ linux/PKGBUILD.custom	2022-06-07 19:08:16.890519633 +0200
+--- linux/PKGBUILD	(revision 42b18126c89f3bf15f695a81db42202fd2fdbd64)
++++ linux/PKGBUILD	(date 1674840352606)
 @@ -10,7 +10,6 @@
  license=(GPL2)
  makedepends=(
-   bc libelf pahole cpio perl tar xz
+   bc libelf pahole cpio perl tar xz gettext
 -  xmlto python-sphinx python-sphinx_rtd_theme graphviz imagemagick texlive-latexextra
    git
  )
  options=('!strip')
-@@ -60,7 +60,7 @@
+@@ -60,7 +59,7 @@
  
  build() {
    cd $_srcname
@@ -17,7 +17,7 @@
  }
  
  _package() {
-@@ -174,26 +174,7 @@
+@@ -173,26 +172,7 @@
    ln -sr "$builddir" "$pkgdir/usr/src/$pkgbase"
  }
  
