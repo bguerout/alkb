@@ -1,19 +1,21 @@
-.DEFAULT_GOAL := default
-PACKAGE_NAME := "linux-custom"
-PACKAGE_RELEASE_NUMBER := "1.1"
+.DEFAULT_GOAL := build
+
+include .env
+export $(shell sed 's/=.*//' .env)
 
 clean:
-	rm -r build/
+	rm -rf build/
 
 prepare:
-	bash tasks.sh get_linux_package
-	bash tasks.sh configure_package ${PACKAGE_NAME} ${PACKAGE_RELEASE_NUMBER}
+	bash tasks.sh checkout_linux_repo
+	bash tasks.sh configure_package
 
-package:
+build: prepare
 	bash tasks.sh build
 
 modprobed: prepare
 	bash tasks.sh apply_patches modprobed
 	bash tasks.sh build
 
-default: prepare package
+install:
+	pacman -U dist/*.tar.zst
