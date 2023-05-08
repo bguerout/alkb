@@ -1,23 +1,29 @@
---- linux/PKGBUILD	(revision 42b18126c89f3bf15f695a81db42202fd2fdbd64)
-+++ linux/PKGBUILD	(date 1674840352606)
-@@ -10,7 +10,6 @@
- license=(GPL2)
- makedepends=(
-   bc libelf pahole cpio perl tar xz gettext
--  xmlto python-sphinx graphviz imagemagick texlive-latexextra
-   git
+--- a/PKGBUILD.orig	(revision f4ef74219a13ae639502f865f341d01708ea9c47)
++++ b/PKGBUILD.orig	(date 1683572510854)
+@@ -18,13 +18,6 @@
+   perl
+   tar
+   xz
+-
+-  # htmldocs
+-  graphviz
+-  imagemagick
+-  python-sphinx
+-  texlive-latexextra
+-  xmlto
  )
  options=('!strip')
-@@ -60,7 +59,7 @@
+ _srcname=archlinux-linux
+@@ -79,7 +72,7 @@
  
  build() {
    cd $_srcname
--  make htmldocs all
-+  make all
+-  _make htmldocs all
++  _make all
  }
  
  _package() {
-@@ -173,26 +172,7 @@
+@@ -204,29 +197,9 @@
    ln -sr "$builddir" "$pkgdir/usr/src/$pkgbase"
  }
  
@@ -40,8 +46,10 @@
 -  ln -sr "$builddir/Documentation" "$pkgdir/usr/share/doc/$pkgbase"
 -}
 -
--pkgname=("$pkgbase" "$pkgbase-headers" "$pkgbase-docs")
-+pkgname=("$pkgbase" "$pkgbase-headers")
+ pkgname=(
+   "$pkgbase"
+   "$pkgbase-headers"
+-  "$pkgbase-docs"
+ )
  for _p in "${pkgname[@]}"; do
    eval "package_$_p() {
-     $(declare -f "_package${_p#$pkgbase}")

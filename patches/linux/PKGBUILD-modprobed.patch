@@ -1,11 +1,11 @@
---- PKGBUILD	2022-06-07 19:08:45.277371244 +0200
-+++ PKGBUILD-modprobed.custom	2022-06-07 19:08:16.890519633 +0200
-@@ -54,6 +53,8 @@
-   make olddefconfig
-   diff -u ../config .config || :
- 
+--- a/PKGBUILD.orig	(revision f4ef74219a13ae639502f865f341d01708ea9c47)
++++ b/PKGBUILD.orig	(date 1683619896781)
+@@ -72,6 +72,8 @@
+   echo "Setting config..."
+   cp ../config .config
+   _make olddefconfig
 +  yes 'n' | make LSMOD=$HOME/.config/modprobed.db localmodconfig
 +
-   make -s kernelrelease > version
+   diff -u ../config .config || :
+ 
    echo "Prepared $pkgbase version $(<version)"
- }
