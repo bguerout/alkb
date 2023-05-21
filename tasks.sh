@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-
 readonly BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck disable=SC2046
 [ -f "${BASE_DIR}/.env" ] && export $(grep -vE "^(#.*|\s*)$" "${BASE_DIR}/.env" | xargs)
 readonly KERNEL_NAME="${KERNEL_NAME:?"You must provide a kernel name (linux or linux-lts)"}"
+readonly PKG_BASE_NAME="${PKG_BASE_NAME:?"You must provide a package name (eg. linux-custom)"}"
+
 readonly PATCHES_DIR="${BASE_DIR}/patches/${KERNEL_NAME}"
 readonly BUILD_DIR="${BASE_DIR}/build"
 readonly LINUX_DIR="${BUILD_DIR}/${KERNEL_NAME}/repo"
